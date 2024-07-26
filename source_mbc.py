@@ -66,10 +66,10 @@ class SourceMBC(SourceBase):
             }
             if len(source_id) == 3:
                 url = f'https://sminiplay.imbc.com/aacplay.ashx?channel={source_id}&protocol=M3U8&agent=webapp'
-                logger.debug(url)
+                logger.info(url)
                 data = requests.get(url).text
                 data = data.replace('playlist', 'chunklist')
-                logger.debug(data)
+                logger.info(data)
                 return 'redirect', data
             elif source_id != '0':
                 url = f'https://mediaapi.imbc.com/Player/OnAirPlusURLUtil?ch={source_id}&type=PC&t={int(time.time())}'
