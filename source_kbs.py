@@ -65,10 +65,12 @@ class SourceKBS(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            data = requests.get(url, headers=default_headers).text
+            proxy = Wavve.get_proxy()
+            proxies = Wavve.get_proxies()
+            data = requests.get(url, proxies=proxies, headers=default_headers).text
             #logger.error(url)
             #logger.error(data)
-            return cls.change_redirect_data(data)
+            return cls.change_redirect_data(data, proxy=proxy)
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
