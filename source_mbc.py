@@ -87,8 +87,10 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            data = requests.get(url, headers=default_headers).text
-            #data = cls.change_redirect_data(data)
+            proxy = Wavve.get_proxy()
+            proxies = Wavve.get_proxies()
+            data = requests.get(url, proxies=proxies, headers=default_headers).text
+            data = cls.change_redirect_data(data, proxy=proxy)
             tmp = url.split('chunklist')
             data = data.replace('media', tmp[0] + 'media')
             return data
