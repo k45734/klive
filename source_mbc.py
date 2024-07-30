@@ -40,10 +40,10 @@ class SourceMBC(SourceBase):
     def get_channel_list(cls):
         try:
             proxies = None
-            if ModelSetting.get_bool('mbc_use_proxy'):
+            if ModelSetting.get_bool('sbs_use_proxy'):
                 proxies = {
-                    'http':ModelSetting.get('mbc_proxy_url'),
-                    'https':ModelSetting.get('mbc_proxy_url'),
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             ret = []
             url = 'https://control.imbc.com/Schedule/PCONAIR'
@@ -65,10 +65,10 @@ class SourceMBC(SourceBase):
     def get_url(cls, source_id, quality, mode):
         try:
             proxies = None
-            if ModelSetting.get_bool('mbc_use_proxy'):
+            if ModelSetting.get_bool('sbs_use_proxy'):
                 proxies = {
-                    'http':ModelSetting.get('mbc_proxy_url'),
-                    'https':ModelSetting.get('mbc_proxy_url'),
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             headers = {
                 'Host': 'mediaapi.imbc.com',
@@ -100,10 +100,10 @@ class SourceMBC(SourceBase):
     def get_return_data(cls, source_id, url, mode):
         try:
             proxies = None
-            if ModelSetting.get_bool('mbc_use_proxy'):
+            if ModelSetting.get_bool('sbs_use_proxy'):
                 proxies = {
-                    'http':ModelSetting.get('mbc_proxy_url'),
-                    'https':ModelSetting.get('mbc_proxy_url'),
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             data = requests.get(url, proxies=proxies, headers=default_headers).text
             #data = cls.change_redirect_data(data, proxies=proxies)
