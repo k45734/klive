@@ -84,7 +84,7 @@ class SourceMBC(SourceBase):
                 url = f'https://mediaapi.imbc.com/Player/OnAirPlusURLUtil?ch={source_id}&type=PC&t={int(time.time())}'
             else:
                 url = f'https://mediaapi.imbc.com/Player/OnAirURLUtil?type=PC&t={int(time.time())}'
-            data = requests.get(url, headers=headers, verify=False).json()
+            data = requests.get(url, headers=headers, proxies=proxies, verify=False).json()
             url = data['MediaInfo']['MediaURL'].replace('playlist', 'chunklist')
             return 'return_after_read', url
 
@@ -101,7 +101,7 @@ class SourceMBC(SourceBase):
                     'https':ModelSetting.get('mbc_proxy_url'),
                 }
             data = requests.get(url, proxies=proxies, headers=default_headers).text
-            data = cls.change_redirect_data(data, proxy=proxy)
+            data = cls.change_redirect_data(data, proxies=proxies)
             tmp = url.split('chunklist')
             data = data.replace('media', tmp[0] + 'media')
             return data
