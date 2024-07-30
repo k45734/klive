@@ -65,12 +65,16 @@ class SourceKBS(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            proxy = Wavve.get_proxy()
-            proxies = Wavve.get_proxies()
+            proxies = None
+            if ModelSetting.get_bool('kbs_use_proxy'):
+                proxies = {
+                    'http':ModelSetting.get('kbs_proxy_url'),
+                    'https':ModelSetting.get('kbs_proxy_url'),
+                }
             data = requests.get(url, proxies=proxies, headers=default_headers).text
             #logger.error(url)
             #logger.error(data)
-            return cls.change_redirect_data(data, proxy=proxy)
+            return cls.change_redirect_data(data, proxies=proxies)
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -79,9 +83,15 @@ class SourceKBS(SourceBase):
     @classmethod
     def get_kbs_url(cls, source_id):
         try:
+            proxies = None
+            if ModelSetting.get_bool('kbs_use_proxy'):
+                proxies = {
+                    'http':ModelSetting.get('kbs_proxy_url'),
+                    'https':ModelSetting.get('kbs_proxy_url'),
+                }
             tmp = 'https://cfpwwwapi.kbs.co.kr/api/v1/landing/live/channel_code/%s' % source_id
             #logger.error(tmp)
-            data = requests.get(tmp, headers=default_headers).json()
+            data = requests.get(tmp, proxies=proxies, headers=default_headers).json()
             return data['channel_item'][0]['service_url']
         except Exception as exception: 
             logger.error('Exception:%s', exception)
