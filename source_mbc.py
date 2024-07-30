@@ -105,10 +105,10 @@ class SourceMBC(SourceBase):
                     'http':ModelSetting.get('mbc_proxy_url'),
                     'https':ModelSetting.get('mbc_proxy_url'),
                 }
-            #data = requests.get(url, proxies=proxies, headers=default_headers).text
-            data = cls.change_redirect_data(data, proxies=proxies)
-            #tmp = url.split('chunklist')
-            #data = data.replace('media', tmp[0] + 'media')
+            data = requests.get(url, proxies=proxies, headers=default_headers).text
+            #data = cls.change_redirect_data(data, proxies=proxies)
+            tmp = url.split('chunklist')
+            data = data.replace('media', tmp[0] + 'media')
             return data
         except Exception as e:
             logger.error('Exception:%s', e)
