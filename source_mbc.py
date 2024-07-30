@@ -39,9 +39,11 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_channel_list(cls):
         try:
+            proxy = Wavve.get_proxy()
+            proxies = Wavve.get_proxies()
             ret = []
             url = 'https://control.imbc.com/Schedule/PCONAIR'
-            data = requests.get(url, headers=default_headers).json()
+            data = requests.get(url, headers=default_headers,proxies=proxies).json()
             for cate in ['TVList', 'RadioList']:
                 for item in data[cate]:
                     if item['ScheduleCode'] not in cls.code:
@@ -58,6 +60,8 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_url(cls, source_id, quality, mode):
         try:
+            proxy = Wavve.get_proxy()
+            proxies = Wavve.get_proxies()
             headers = {
                 'Host': 'mediaapi.imbc.com',
                 'Origin': 'https://onair.imbc.com',
@@ -67,7 +71,7 @@ class SourceMBC(SourceBase):
             if len(source_id) == 3:
                 url = f'https://sminiplay.imbc.com/aacplay.ashx?channel={source_id}&protocol=M3U8&agent=webapp'
                 logger.info(url)
-                data = requests.get(url).text
+                data = requests.get(url,proxies=proxies).text
                 data = data.replace('playlist', 'chunklist')
                 logger.info(data)
                 return 'redirect', data
