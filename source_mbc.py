@@ -39,12 +39,13 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_channel_list(cls):
         try:
-            proxies = {
-                    'http':ModelSetting.get("mbc_proxy_url"),
-                    'https':ModelSetting.get("mbc_proxy_url"),
+            proxies = None
+            if ModelSetting.get_bool('sbs_use_proxy'):
+                proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             ret = []
-            logger.debug(ModelSetting.get("mbc_proxy_url"))
             url = 'https://control.imbc.com/Schedule/PCONAIR'
             data = requests.get(url, headers=default_headers,proxies=proxies).json()
             for cate in ['TVList', 'RadioList']:
@@ -63,9 +64,11 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_url(cls, source_id, quality, mode):
         try:
-            proxies = {
-                    'http':ModelSetting.get('mbc_proxy_url'),
-                    'https':ModelSetting.get('mbc_proxy_url'),
+            proxies = None
+            if ModelSetting.get_bool('sbs_use_proxy'):
+                proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             headers = {
                 'Host': 'mediaapi.imbc.com',
@@ -96,9 +99,11 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            proxies = {
-                    'http':ModelSetting.get('mbc_proxy_url'),
-                    'https':ModelSetting.get('mbc_proxy_url'),
+            proxies = None
+            if ModelSetting.get_bool('sbs_use_proxy'):
+                proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
                 }
             data = requests.get(url, proxies=proxies, headers=default_headers).text
             data = cls.change_redirect_data(data, proxies=proxies)
