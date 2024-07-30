@@ -39,15 +39,9 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_channel_list(cls):
         try:
-            proxies = None
-            if ModelSetting.get_bool('sbs_use_proxy'):
-                proxies = {
-                    'http':ModelSetting.get('sbs_proxy_url'),
-                    'https':ModelSetting.get('sbs_proxy_url'),
-                }
             ret = []
             url = 'https://control.imbc.com/Schedule/PCONAIR'
-            data = requests.get(url, headers=default_headers,proxies=proxies).json()
+            data = requests.get(url, headers=default_headers).json()
             for cate in ['TVList', 'RadioList']:
                 for item in data[cate]:
                     if item['ScheduleCode'] not in cls.code:
@@ -99,13 +93,7 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            proxies = None
-            if ModelSetting.get_bool('sbs_use_proxy'):
-                proxies = {
-                    'http':ModelSetting.get('sbs_proxy_url'),
-                    'https':ModelSetting.get('sbs_proxy_url'),
-                }
-            data = requests.get(url, proxies=proxies, headers=default_headers).text
+            data = requests.get(url, headers=default_headers).text
             #data = cls.change_redirect_data(data, proxies=proxies)
             tmp = url.split('chunklist')
             data = data.replace('media', tmp[0] + 'media')
