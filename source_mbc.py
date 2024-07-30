@@ -39,8 +39,10 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_channel_list(cls):
         try:
-            proxy = Wavve.get_proxy()
-            proxies = Wavve.get_proxies()
+            proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
+                }
             ret = []
             url = 'https://control.imbc.com/Schedule/PCONAIR'
             data = requests.get(url, headers=default_headers,proxies=proxies).json()
@@ -60,8 +62,10 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_url(cls, source_id, quality, mode):
         try:
-            proxy = Wavve.get_proxy()
-            proxies = Wavve.get_proxies()
+            proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
+                }
             headers = {
                 'Host': 'mediaapi.imbc.com',
                 'Origin': 'https://onair.imbc.com',
@@ -91,8 +95,10 @@ class SourceMBC(SourceBase):
     @classmethod
     def get_return_data(cls, source_id, url, mode):
         try:
-            proxy = Wavve.get_proxy()
-            proxies = Wavve.get_proxies()
+            proxies = {
+                    'http':ModelSetting.get('sbs_proxy_url'),
+                    'https':ModelSetting.get('sbs_proxy_url'),
+                }
             data = requests.get(url, proxies=proxies, headers=default_headers).text
             data = cls.change_redirect_data(data, proxy=proxy)
             tmp = url.split('chunklist')
